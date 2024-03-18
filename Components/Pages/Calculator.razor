@@ -1,0 +1,214 @@
+﻿@page "/calculator"
+
+<h3>Calculator</h3>
+
+
+<div class="card calculator">
+    <input type="text" class="calculator-display" value="@DisplayText"/>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <Button class="btn-primary p-3" @onclick="PlusOperator">+</Button>
+            </div>
+            <div class="col">
+                <Button class="btn-primary p-3" @onclick="MinusOperator">-</Button>
+            </div>
+            <div class="col">
+                <Button class="btn-primary p-3" @onclick="MultiplyOperator">*</Button>
+            </div>
+            <div class="col">
+                <Button class="btn-primary p-3" @onclick="DivisionOperator">/</Button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <Button class="btn-primary p-3" @onclick="() => { DisplayText += '7'; NumberInput += '7'; }">7</Button>
+            </div>
+            <div class="col">
+                <Button class="btn-primary p-3" @onclick="() => { DisplayText += '8'; NumberInput += '8'; }">8</Button>
+            </div>
+            <div class="col">
+                <Button class="btn-primary p-3" @onclick="() => { DisplayText += '9'; NumberInput += '9'; }">9</Button>
+            </div>
+            <div class="col">
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <Button class="btn-primary p-3" @onclick="() => { DisplayText += '4'; NumberInput += '4'; }">4</Button>
+            </div>
+            <div class="col">
+                <Button class="btn-primary p-3" @onclick="() => { DisplayText += '5'; NumberInput += '5'; }">5</Button>
+            </div>
+            <div class="col">
+                <Button class="btn-primary p-3" @onclick="() => { DisplayText += '6'; NumberInput += '6'; }">6</Button>
+            </div>
+            <div class="col">
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <Button class="btn-primary p-3" @onclick="() => { DisplayText += '1'; NumberInput += '1'; }">1</Button>
+            </div>
+            <div class="col">
+                <Button class="btn-primary p-3" @onclick="() => { DisplayText += '2'; NumberInput += '2'; }">2</Button>
+            </div>
+            <div class="col">
+                <Button class="btn-primary p-3" @onclick="() => { DisplayText += '3'; NumberInput += '3'; }">3</Button>
+            </div>
+            <div class="col">
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                
+            </div>
+            <div class="col">
+                <Button class="btn-primary p-3" @onclick="() => { DisplayText += '0'; NumberInput += '0'; }">0</Button>
+            </div>
+            <div class="col">
+                <Button class="btn-primary p-3" @onclick="ClearDisplay">C</Button>
+            </div>
+            <div class="col">
+                <Button class="btn-primary p-3" @onclick="CalculateResult">=</Button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    public string DisplayText { get; set; } = "";
+    public string NumberInput { get; set; } = "";
+    public double Sum { get; set; } = 0;
+    public double NextNumber { get; set; } = 0;
+    public bool FirstInput { get; set; } = true;
+    char _currentOperator = '+';
+
+    private void PlusOperator()
+    {
+        DisplayText += "+";
+        _currentOperator = '+';
+
+        if (FirstInput)
+        {
+            Sum = double.Parse(NumberInput);
+            NumberInput = string.Empty;
+            FirstInput = false;
+            return;
+        }
+
+        NextNumber = double.Parse(NumberInput);
+        Sum += NextNumber;
+        
+        NumberInput = string.Empty;
+    }
+
+    private void MinusOperator()
+    {
+        DisplayText += "-";
+        _currentOperator = '-';
+
+        if (FirstInput)
+        {
+            Sum = double.Parse(NumberInput);
+            NumberInput = string.Empty;
+            FirstInput = false;
+            return;
+        }
+
+        NextNumber = double.Parse(NumberInput);
+        Sum -= NextNumber;
+       
+        NumberInput = string.Empty;
+    }
+
+    private void MultiplyOperator()
+    {
+        DisplayText += "*";
+        _currentOperator = '*';
+
+        if (FirstInput)
+        {
+            Sum = double.Parse(NumberInput);
+            NumberInput = string.Empty;
+            FirstInput = false;
+            return;
+        }
+
+        NextNumber = double.Parse(NumberInput);
+        Sum *= NextNumber;
+       
+        NumberInput = string.Empty;
+    }
+
+    private void DivisionOperator()
+    {
+        DisplayText += "/";
+        _currentOperator = '/';
+
+        if (FirstInput)
+        {
+            Sum = double.Parse(NumberInput);
+            NumberInput = string.Empty;
+            FirstInput = false;
+            return;
+        }
+
+        NextNumber = double.Parse(NumberInput);
+        Sum /= NextNumber;
+      
+        NumberInput = string.Empty;
+    }
+
+    private void ClearDisplay()
+    {
+        DisplayText = string.Empty;
+        NumberInput = string.Empty;
+        Sum = 0;
+        NextNumber = 0;
+        FirstInput = true;
+    }
+
+    private void CalculateResult()
+    {
+        if (FirstInput)
+        {
+            return;
+        }
+
+        if (string.IsNullOrEmpty(NumberInput))
+        {
+            return;
+        }
+
+        NextNumber = double.Parse(NumberInput);
+        NumberInput = string.Empty;
+        switch (_currentOperator)
+        {
+            case '+':
+                Sum += NextNumber;
+                break;
+            case '-':
+                Sum -= NextNumber;
+                break;
+            case '*':
+                Sum *= NextNumber;
+                break;
+            case '/':
+                Sum /= NextNumber;
+                break;
+        }
+       
+
+        DisplayText += $"={Sum}";
+        Sum = 0;
+        NextNumber = 0;
+        FirstInput = true;
+    }
+
+    
+
+}
